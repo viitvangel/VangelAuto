@@ -28,11 +28,9 @@
             }).AsEnumerable(); ;
         }
 
-        public async Task Create(CategoryDto categoryDto)
+        public void Create(CategoryDto categoryDto)
         {
-            await categoryRepository.AddAsync(mapper.Map<Category>(categoryDto));
-
-            await categoryRepository.SaveChangesAsync();
+            categoryRepository.Add(mapper.Map<Category>(categoryDto));
         }
     }
 }

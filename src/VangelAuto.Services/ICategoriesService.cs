@@ -8,6 +8,6 @@
     {
         IEnumerable<CategoryDto> GetAll();
 
-        Task Create(CategoryDto input);
+        void Create(CategoryDto input);
     }
 }

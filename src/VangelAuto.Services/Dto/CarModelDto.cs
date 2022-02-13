@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
 
-    public class MakeModelDto
+    public class CarModelDto
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string MakeName { get; set; }
 
-        public IEnumerable<ModelDto> Models { get; set; }
+        public string ModelName { get; set; }
     }
 }

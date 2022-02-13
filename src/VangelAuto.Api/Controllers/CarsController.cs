@@ -30,25 +30,25 @@ namespace VangelAuto.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(CreateCarDto input)
+        public ActionResult Create(CreateCarDto input)
         {
-            await carService.Create(input);
+            carService.Create(input);
 
             return Ok();
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            await carService.Delete(id);
+           carService.Delete(id);
 
             return Ok();
         }
 
         [HttpPut]
-        public async Task<ActionResult> Edit(UpdateCar input)
+        public ActionResult Edit(UpdateCar input)
         {
-            await carService.Edit(input);
+            carService.Edit(input);
 
             return Ok();
         }

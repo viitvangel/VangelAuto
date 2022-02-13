@@ -11,25 +11,25 @@ namespace VangelAuto.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CarModelsController : ControllerBase
     {
-        private readonly ICategoriesService categoriesService;
+        private readonly ICarModelService carModelsService;
 
-        public CategoriesController(ICategoriesService categoriesService)
+        public CarModelsController(ICarModelService carMakesService)
         {
-            this.categoriesService = categoriesService;
+            this.carModelsService = carMakesService;
         }
 
         [HttpGet]
         public ActionResult GetAll()
         {
-            return Ok(this.categoriesService.GetAll());
+            return Ok(carModelsService.GetAll());
         }
 
         [HttpPost]
-        public ActionResult Create(CategoryDto input)
+        public ActionResult Create(CarModelDto input)
         {
-            categoriesService.Create(input);
+            carModelsService.Create(input);
 
             return Ok();
         }

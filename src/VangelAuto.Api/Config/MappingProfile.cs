@@ -14,11 +14,13 @@ namespace VangelAuto.Api.Config
     {
         public MappingProfile()
         {
-            CreateMap<CarDto, Car>().ReverseMap().ForMember(x => x.Make, opt => opt.MapFrom(y => y.CarModel.CarMake.Name))
-                .ForMember(x => x.Model, opt => opt.MapFrom(y => y.CarModel.Name));
+            CreateMap<CarDto, Car>().ReverseMap()
+                .ForMember(x => x.Model, opt => opt.MapFrom(y => y.CarModel.ModelName))
+                .ForMember(x => x.Make, opt => opt.MapFrom(y => y.CarModel.MakeName));
             CreateMap<CreateCarDto, Car>().ReverseMap();
             CreateMap<Car, UpdateCar>().ReverseMap().ForMember(x => x.CarModelId, opt => opt.MapFrom(y => y.ModelId));
             CreateMap<CategoryDto, Category>().ReverseMap();
+            CreateMap<CarModel, CarModelDto>().ReverseMap();
         }
     }
 }

@@ -13,15 +13,17 @@
     public class CarService : ICarService
     {
         private readonly IRepository<Car> carRepository;
+        private readonly IRepository<CarModel> carModelRepository;
         private readonly IMapper mapper;
 
-        public CarService(IRepository<Car> autopartRepository, IMapper mapper)
+        public CarService(IRepository<Car> autopartRepository, IRepository<CarModel> carModelRepository, IMapper mapper)
         {
             this.carRepository = autopartRepository;
+            this.carModelRepository = carModelRepository;
             this.mapper = mapper;
         }
 
-        public async Task Create(CreateCarDto car)
+        public void Create(CreateCarDto car)
         {
             if (car == null)
             {
@@ -32,18 +34,17 @@
             {
                 Name = car.Name,
                 CarModelId = car.ModelId,
+                CarModel = new CarModel() { Id = car.ModelId },
                 CategoryId = car.CategoryId,
                 DateAdded = DateTime.UtcNow,
                 ModifiedDate = DateTime.UtcNow,
                 Price = car.Price
             };
 
-            await carRepository.AddAsync(carEntity);
-
-            await carRepository.SaveChangesAsync();
+            carRepository.Add(carEntity);
         }
 
-        public async Task Delete(int id)
+        public void Delete(int id)
         {
             var entity = carRepository.All().Where(x => x.Id == id).FirstOrDefault();
 
@@ -53,13 +54,11 @@
             }
 
             carRepository.Delete(entity);
-
-            await carRepository.SaveChangesAsync();
         }
 
-        public async Task Edit(UpdateCar input)
+        public void Edit(UpdateCar input)
         {
-            var entity = carRepository.AllAsNoTracking().Where(x => x.Id == input.Id).FirstOrDefault();
+            var entity = carRepository.All().Where(x => x.Id == input.Id).FirstOrDefault();
 
             if (entity is null)
             {
@@ -68,13 +67,22 @@
 
             entity = mapper.Map<Car>(input);
             carRepository.Update(entity);
-            await carRepository.SaveChangesAsync();
         }
 
         public IEnumerable<CarDto> GetAll()
         {
-            var result = carRepository.All().Include(x => x.CarModel).ThenInclude(x => x.CarMake);
-            return carRepository.All().Include(x => x.CarModel).ThenInclude(x => x.CarMake).Select(x => mapper.Map<Car, CarDto>(x)).AsEnumerable();
+            return carRepository.All().Select(c =>
+            {
+                var carModel = carModelRepository.All().Where(cm => cm.Id == c.CarModel.Id).FirstOrDefault();
+
+                if (carModel is not null)
+                {
+                    c.CarModel.MakeName = carModel.MakeName;
+                    c.CarModel.ModelName = carModel.ModelName;
+                }
+                
+                return mapper.Map<Car, CarDto>(c);
+            }).AsEnumerable();
         }
     }
 }

@@ -6,12 +6,12 @@
 
     public interface ICarService
     {
-        Task Create(CreateCarDto autopart);
+        void Create(CreateCarDto autopart);
 
         IEnumerable<CarDto> GetAll();
 
-        Task Delete(int id);
+        void Delete(int id);
 
-        Task Edit(UpdateCar input);
+        void Edit(UpdateCar input);
     }
 }
